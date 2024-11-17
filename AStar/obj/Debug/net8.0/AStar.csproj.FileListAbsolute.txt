@@ -1,0 +1,14 @@
+C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\bachelorThesis\Implementation\AStar\obj\Debug\net8.0\AStar.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\bachelorThesis\Implementation\AStar\obj\Debug\net8.0\AStar.AssemblyInfoInputs.cache
+C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\bachelorThesis\Implementation\AStar\obj\Debug\net8.0\AStar.AssemblyInfo.cs
+C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\bachelorThesis\Implementation\AStar\obj\Debug\net8.0\AStar.csproj.CoreCompileInputs.cache
+C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\bachelorThesis\Implementation\AStar\bin\Debug\net8.0\AStar.exe
+C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\bachelorThesis\Implementation\AStar\bin\Debug\net8.0\AStar.deps.json
+C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\bachelorThesis\Implementation\AStar\bin\Debug\net8.0\AStar.runtimeconfig.json
+C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\bachelorThesis\Implementation\AStar\bin\Debug\net8.0\AStar.dll
+C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\bachelorThesis\Implementation\AStar\bin\Debug\net8.0\AStar.pdb
+C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\bachelorThesis\Implementation\AStar\obj\Debug\net8.0\AStar.dll
+C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\bachelorThesis\Implementation\AStar\obj\Debug\net8.0\refint\AStar.dll
+C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\bachelorThesis\Implementation\AStar\obj\Debug\net8.0\AStar.pdb
+C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\bachelorThesis\Implementation\AStar\obj\Debug\net8.0\AStar.genruntimeconfig.cache
+C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\bachelorThesis\Implementation\AStar\obj\Debug\net8.0\ref\AStar.dll
