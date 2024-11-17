@@ -4,15 +4,24 @@ public class AStarClassic
 {
     public static void Main(string[] args)
     {
-       
+       Grid grid = new Grid(10, 10);
+        InitializeGrid(grid);
+
+        Node start = grid.NodeGrid[0, 0];
+        Node end = grid.NodeGrid[9, 9];
+
+         Node[,] nodes = grid.NodeGrid;
+
+        AStarVisualizer visualizer = new AStarVisualizer(grid);
+        AStar(grid, start, end, visualizer);
+        visualizer.Run();
         
     }
 
-    public static void AStar(Grid grid, Node start, Node end){
+    public static void AStar(Grid grid, Node start, Node end, AStarVisualizer visualizer){
        
         List<Node> openList = new List<Node>();
         List<Node> closedList = new List<Node>();
-        List<Node> path = new List<Node>();
 
         Node[,] nodes = grid.NodeGrid;
 
@@ -23,6 +32,8 @@ public class AStarClassic
         }
         
         openList.Add(start);
+        grid.SetValue(start.X, start.Y, 2); // Start node
+        grid.SetValue(end.X, end.Y, 3);     // End node
 
         while(openList.Count > 0){
 
@@ -36,12 +47,26 @@ public class AStarClassic
 
             Node current = openList[lowestIndex];
 
-            if(current==end){
-                Console.WriteLine("done");    
+            if(current==end){ 
+                grid.SetValue(start.X, start.Y, 2); // So the start node is clear
+                grid.SetValue(end.X, end.Y, 3);     // So the end node is clear     
+                //something is wrong the end node is not changing color
+
+                Node temp = current;
+                while (temp.Parent != null)
+                {
+                    //Console.WriteLine($"Setting path node at ({temp.X}, {temp.Y})");
+                    grid.SetValue(temp.X, temp.Y, 4); // Path node
+                    temp = temp.Parent;
+                } 
+                
+                visualizer.Update(); // Final update to show the path
+                Console.WriteLine("done");
             }
 
             openList.Remove(current);
             closedList.Add(current);
+            grid.SetValue(current.X, current.Y, 5); // closed color
             List<Node> neighbors = current.Neighbors;
             for (int i = 0; i < neighbors.Count; i++){
                 Node neighbor = neighbors[i];
@@ -55,18 +80,21 @@ public class AStarClassic
                     }else{
                         neighbor.G = tempG;
                         openList.Add(neighbor);
+                        grid.SetValue(neighbor.X, neighbor.Y, 6); //next open color
                     }   
+                    neighbor.H = Heuristic(neighbor, end);
+                    // In the class: neighbor.F = neighbor.G + neighbor.H;
+                    neighbor.Parent = current;
+                   // Console.WriteLine(neighbor.X + "," + neighbor.Y);
                 }
 
-                neighbor.H = Heuristic(neighbor, end);
-                // In the class: neighbor.F = neighbor.G + neighbor.H;
-                neighbor.Parent = current;
+                
             }
 
-            grid.PrintGrid();
+             visualizer.Update();
+            //Console.WriteLine("-----------------------------------------------");
+             //grid.PrintGrid();
         }
-
-        
 
         return;
     }
@@ -75,30 +103,31 @@ public class AStarClassic
         return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
     }
    
-
    //To visualize the path
-    public List<Node> GetPath(Node endNode)
+
+
+
+    // just initializing with whatever values but they wilhave obstacles
+    private static void InitializeGrid(Grid grid)
     {
-        List<Node> path = new List<Node>();
-        Node currentNode = endNode;
-
-        while (currentNode.Parent!=null)
+        for (int x = 0; x < grid.Rows; x++)
         {
-            path.Add(currentNode);
-            currentNode = currentNode.Parent;
+            for (int y = 0; y < grid.Columns; y++)
+            {
+                grid.SetValue(x, y, 0); // Set all cells to 0 -> white
+            }
         }
-
-        path.Reverse();
-        return path;
     }
+
+
 
 
  // Some tests form here
 
    public static void TestInitializeNodeGrid()
 {
-    int rows = 3;
-    int columns = 3;
+    int rows = 30;
+    int columns = 30;
     Grid grid = new Grid(rows, columns);
 
    for (int x = 0; x < rows; x++)
@@ -134,7 +163,7 @@ public class AStarClassic
         Console.WriteLine("NodeGrid initialization failed.");
     }
 
-      Node node = grid.NodeGrid[1, 1];
+      Node node = grid.NodeGrid[20, 20];
         node.AddNeighbors(grid);
 
         Console.WriteLine($"Node at (1, 1) has {node.Neighbors.Count} neighbors.");

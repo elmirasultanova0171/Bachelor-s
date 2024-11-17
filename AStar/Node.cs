@@ -15,7 +15,7 @@ public class Node
        this.Neighbors = new List<Node>();
     }
 
-    public void AddNeighbors(Grid grid) { 
+    public void AddNeighbors(Grid grid) {    //can only handle grids that are square
         var x = this.X;
         var y = this.Y;
 
