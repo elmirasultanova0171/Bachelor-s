@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0iPvttUpHyE=",
+  "dgSpecHash": "CtqUa+foBwE=",
   "success": true,
-  "projectFilePath": "C:\\Users\\elmir\\OneDrive\\Desktop\\Thesis\\thesis_directory\\bachelorThesis\\Implementation\\AStar\\AStar.csproj",
+  "projectFilePath": "C:\\Users\\elmir\\OneDrive\\Desktop\\Thesis\\thesis_directory\\AStar\\AStar.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\elmir\\.nuget\\packages\\csfml\\2.6.1\\csfml.2.6.1.nupkg.sha512",
     "C:\\Users\\elmir\\.nuget\\packages\\sfml.audio\\2.6.0\\sfml.audio.2.6.0.nupkg.sha512",

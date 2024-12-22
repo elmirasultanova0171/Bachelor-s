@@ -4,11 +4,11 @@ public class AStarClassic
 {
     public static void Main(string[] args)
     {
-       Grid grid = new Grid(10, 10);
+       Grid grid = new Grid(50, 50);
         InitializeGrid(grid);
 
         Node start = grid.NodeGrid[0, 0];
-        Node end = grid.NodeGrid[9, 9];
+        Node end = grid.NodeGrid[32, 18];
 
          Node[,] nodes = grid.NodeGrid;
 
@@ -32,8 +32,6 @@ public class AStarClassic
         }
         
         openList.Add(start);
-        grid.SetValue(start.X, start.Y, 2); // Start node
-        grid.SetValue(end.X, end.Y, 3);     // End node
 
         while(openList.Count > 0){
 
@@ -48,9 +46,7 @@ public class AStarClassic
             Node current = openList[lowestIndex];
 
             if(current==end){ 
-                grid.SetValue(start.X, start.Y, 2); // So the start node is clear
-                grid.SetValue(end.X, end.Y, 3);     // So the end node is clear     
-                //something is wrong the end node is not changing color
+                grid.SetValue(start.X, start.Y, 2); 
 
                 Node temp = current;
                 while (temp.Parent != null)
@@ -59,14 +55,19 @@ public class AStarClassic
                     grid.SetValue(temp.X, temp.Y, 4); // Path node
                     temp = temp.Parent;
                 } 
-                
+                grid.SetValue(end.X, end.Y, 3); 
                 visualizer.Update(); // Final update to show the path
                 Console.WriteLine("done");
+                return;
             }
 
             openList.Remove(current);
             closedList.Add(current);
+           
+           if(current!=end){
             grid.SetValue(current.X, current.Y, 5); // closed color
+            }
+            
             List<Node> neighbors = current.Neighbors;
             for (int i = 0; i < neighbors.Count; i++){
                 Node neighbor = neighbors[i];

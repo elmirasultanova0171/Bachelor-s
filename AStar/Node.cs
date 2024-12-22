@@ -30,7 +30,21 @@ public class Node
         }
         if (y > 0){
             this.Neighbors.Add(grid.NodeGrid[x, y-1]);
-        }                
+        }  
+
+        // Adding diagonal neighbors
+        if (x < grid.Rows - 1 && y < grid.Columns - 1){
+            Neighbors.Add(grid.NodeGrid[x + 1, y + 1]);
+        }
+        if (x < grid.Rows - 1 && y > 0){
+            Neighbors.Add(grid.NodeGrid[x + 1, y - 1]);
+        }
+        if (x > 0 && y < grid.Columns - 1){
+            Neighbors.Add(grid.NodeGrid[x - 1, y + 1]);
+        }
+        if (x > 0 && y > 0){
+            Neighbors.Add(grid.NodeGrid[x - 1, y - 1]);
+        }             
     }
 
   

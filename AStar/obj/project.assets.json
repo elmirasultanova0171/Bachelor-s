@@ -1081,11 +1081,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\elmir\\OneDrive\\Desktop\\Thesis\\thesis_directory\\bachelorThesis\\Implementation\\AStar\\AStar.csproj",
+      "projectUniqueName": "C:\\Users\\elmir\\OneDrive\\Desktop\\Thesis\\thesis_directory\\AStar\\AStar.csproj",
       "projectName": "AStar",
-      "projectPath": "C:\\Users\\elmir\\OneDrive\\Desktop\\Thesis\\thesis_directory\\bachelorThesis\\Implementation\\AStar\\AStar.csproj",
+      "projectPath": "C:\\Users\\elmir\\OneDrive\\Desktop\\Thesis\\thesis_directory\\AStar\\AStar.csproj",
       "packagesPath": "C:\\Users\\elmir\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\elmir\\OneDrive\\Desktop\\Thesis\\thesis_directory\\bachelorThesis\\Implementation\\AStar\\obj\\",
+      "outputPath": "C:\\Users\\elmir\\OneDrive\\Desktop\\Thesis\\thesis_directory\\AStar\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
