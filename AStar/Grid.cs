@@ -6,6 +6,7 @@ public class Grid
     public int Columns { get; set; }
     private int[,] matrix; 
     public Node[,] NodeGrid { get; private set; } = null!;
+ 
 
     public Grid(int rows, int columns) { 
         this.Rows = rows; 

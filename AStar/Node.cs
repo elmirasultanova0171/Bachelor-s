@@ -7,12 +7,20 @@ public class Node
     public int F => G + H;
     public Node? Parent { get; set; }
     public List<Node> Neighbors { get; set; }
+    public bool Wall;
 
     public Node(int x, int y)
     {
         X = x;
         Y = y;
        this.Neighbors = new List<Node>();
+       this.Wall = false;
+
+       Random random = new Random();
+       if(random.Next(0, 100) < 40){
+           this.Wall = true;
+       }
+      
     }
 
     public void AddNeighbors(Grid grid) {    //can only handle grids that are square

@@ -8,9 +8,13 @@ public class AStarClassic
         InitializeGrid(grid);
 
         Node start = grid.NodeGrid[0, 0];
-        Node end = grid.NodeGrid[32, 18];
+        start.Wall = false;
+        Node end = grid.NodeGrid[49, 49];
+        end.Wall = false;
+
 
          Node[,] nodes = grid.NodeGrid;
+
 
         AStarVisualizer visualizer = new AStarVisualizer(grid);
         AStar(grid, start, end, visualizer);
@@ -72,7 +76,7 @@ public class AStarClassic
             for (int i = 0; i < neighbors.Count; i++){
                 Node neighbor = neighbors[i];
 
-                if(!closedList.Contains(neighbor)){
+                if(!closedList.Contains(neighbor) && !neighbor.Wall){
                     int tempG = current.G + 1;         //assuming all nodes have a cost of 1
                     if(openList.Contains(neighbor)){
                         if(tempG < neighbor.G){
@@ -115,7 +119,12 @@ public class AStarClassic
         {
             for (int y = 0; y < grid.Columns; y++)
             {
-                grid.SetValue(x, y, 0); // Set all cells to 0 -> white
+                if(grid.NodeGrid[x,y].Wall){
+                    grid.SetValue(x, y, 1); // Set all cells to 1 -> black
+                }
+                else{
+                    grid.SetValue(x, y, 0); // Set all cells to 0 -> white
+                }
             }
         }
     }
