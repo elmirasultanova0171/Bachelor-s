@@ -3,19 +3,13 @@ using System;
 public class AStarMemoryOptimizations
 {
     
-    public static void AStarBlocking(Grid grid, Node start, Node end, AStarVisualizer visualizer)
+    public static void AStarBlocking(Grid grid, Node start, Node end, int tileSize)
     {
        
        List<Node> openList = new List<Node>();
         List<Node> closedList = new List<Node>();
 
         Node[,] nodes = grid.NodeGrid;
-
-        for (int i = 0; i<grid.Rows; i++ ){
-            for (int j = 0; j < grid.Columns; j++ ){
-                nodes[i,j].AddNeighbors(grid);
-            }
-        }
         
         openList.Add(start);
 
@@ -23,11 +17,16 @@ public class AStarMemoryOptimizations
 
            int lowestIndex = 0;
 
-           for(int i = 0; i < openList.Count; i++){
-            if(openList[i].F <openList[lowestIndex].F){
-                lowestIndex=i;
+           for (int i = 0; i < openList.Count; i += tileSize)
+            {
+                for (int j = i; j < Math.Min(i + tileSize, openList.Count); j++)
+                {
+                    if (openList[j].F < openList[lowestIndex].F)
+                    {
+                        lowestIndex = j;
+                    }
+                }
             }
-           }
 
             Node current = openList[lowestIndex];
 
@@ -53,7 +52,7 @@ public class AStarMemoryOptimizations
            if(current!=end){
             //grid.SetValue(current.X, current.Y, 5); // closed color
             }
-            
+            current.AddNeighbors(grid);
             List<Node> neighbors = current.Neighbors;
             for (int i = 0; i < neighbors.Count; i++){
                 Node neighbor = neighbors[i];

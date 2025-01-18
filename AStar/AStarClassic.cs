@@ -2,7 +2,7 @@
 
 public class AStarClassic
 {
-    /*
+    
     public static void Main(string[] args)
     {
         Grid grid = new Grid(100, 100);
@@ -22,7 +22,7 @@ public class AStarClassic
         visualizer.Run();
         
     }  
-    */
+    
 
     public static void AStar(Grid grid, Node start, Node end, AStarVisualizer visualizer){
        
@@ -30,12 +30,6 @@ public class AStarClassic
         List<Node> closedList = new List<Node>();
 
         Node[,] nodes = grid.NodeGrid;
-
-        for (int i = 0; i<grid.Rows; i++ ){
-            for (int j = 0; j < grid.Columns; j++ ){
-                nodes[i,j].AddNeighbors(grid);
-            }
-        }
         
         openList.Add(start);
 
@@ -73,7 +67,7 @@ public class AStarClassic
            if(current!=end){
             grid.SetValue(current.X, current.Y, 5); // closed color
             }
-            
+            current.AddNeighbors(grid);
             List<Node> neighbors = current.Neighbors;
             for (int i = 0; i < neighbors.Count; i++){
                 Node neighbor = neighbors[i];

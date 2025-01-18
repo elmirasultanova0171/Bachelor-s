@@ -35,7 +35,7 @@ public class AStarBenchmarking
     private Node startNode;
     private Node endNode;
 
-    [Params(100)] // Different sizes of the grid
+    [Params(200)] // Different sizes of the grid
     public int GridSize;
 
     [GlobalSetup]
@@ -52,15 +52,25 @@ public class AStarBenchmarking
     {
         AStarClassic.AStarNoVisuals(grid, startNode, endNode); // Run the A* algorithm with visualization
     }
+
+
+    [Benchmark]
+    public void BenchmarkAStarBlocking()
+    {
+        AStarMemoryOptimizations.AStarBlocking(grid, startNode, endNode, 16); // Run the A* algorithm with blocking
+    }
+
 }
 
 public class Program
 {
+    /*
     public static void Main(string[] args)
     {
         var summary = BenchmarkRunner.Run<AStarBenchmarking>();
         Console.WriteLine(summary);
     }
+    */
 }
 
 
