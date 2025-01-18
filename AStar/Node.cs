@@ -17,7 +17,7 @@ public class Node
        this.Wall = false;
 
        Random random = new Random();
-       if(random.Next(0, 100) < 40){
+       if(random.Next(0, 100) < 20){
            this.Wall = true;
        }
       
