@@ -4,7 +4,7 @@ using SFML.Window;
 
 public class AStarVisualizer
 {
-    private const int CellSize = 10; // Size of each cell in pixels
+    private const int CellSize = 8; // Size of each cell in pixels
     private RenderWindow window;
     private Grid grid;
 

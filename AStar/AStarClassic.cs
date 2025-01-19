@@ -2,11 +2,11 @@
 
 public class AStarClassic
 {
-    
+    /*
     public static void Main(string[] args)
     {
         Grid grid = new Grid(100, 100);
-        InitializeGrid(grid);
+       
 
         Node start = grid.NodeGrid[0, 0];
         start.Wall = false;
@@ -22,15 +22,15 @@ public class AStarClassic
         visualizer.Run();
         
     }  
-    
+    */
 
     public static void AStar(Grid grid, Node start, Node end, AStarVisualizer visualizer){
        
         List<Node> openList = new List<Node>();
         List<Node> closedList = new List<Node>();
 
-        Node[,] nodes = grid.NodeGrid;
-        
+       // InitializeGrid(grid);
+
         openList.Add(start);
 
         while(openList.Count > 0){

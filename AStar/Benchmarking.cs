@@ -42,8 +42,10 @@ public class AStarBenchmarking
     public void Setup()
     {
         grid = new Grid(GridSize, GridSize); // Initialize the grid with the specified size
-        startNode = grid.NodeGrid[0, 0]; // Set the start node
-        endNode = grid.NodeGrid[GridSize - 1, GridSize - 1]; // Set the end node
+        startNode = grid.NodeGrid[0, 0]; 
+        endNode = grid.NodeGrid[GridSize - 1, GridSize - 1]; 
+        startNode.Wall = false;
+        endNode.Wall = false;
         
     }
 
@@ -57,28 +59,25 @@ public class AStarBenchmarking
     [Benchmark]
     public void BenchmarkAStarBlocking()
     {
-        AStarMemoryOptimizations.AStarBlocking(grid, startNode, endNode, 16); // Run the A* algorithm with blocking
+        AStarMemoryOptimizations.AStarBlocking(grid, startNode, endNode, 16, 100); // Run the A* algorithm with blocking
     }
 
 }
 
 public class Program
 {
-    /*
+    
     public static void Main(string[] args)
     {
         var summary = BenchmarkRunner.Run<AStarBenchmarking>();
         Console.WriteLine(summary);
     }
-    */
+    
 }
 
 
 /*
 
-| Method         | GridSize | Mean     | Error    | StdDev   | Allocated |
-|--------------- |--------- |---------:|---------:|---------:|----------:|
-| BenchmarkAStar | 100      | 175.9 ms | 34.08 ms | 31.88 ms |  10.33 KB |
 
 
 */

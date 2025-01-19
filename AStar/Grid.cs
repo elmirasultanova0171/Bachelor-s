@@ -5,7 +5,7 @@ public class Grid
     public int Rows { get; set; } 
     public int Columns { get; set; }
     private int[,] matrix; 
-    public Node[,] NodeGrid { get; private set; } = null!;
+    public Node[,] NodeGrid { get; set; } = null!;
  
 
     public Grid(int rows, int columns) { 
@@ -55,7 +55,11 @@ public class Grid
         NodeGrid = new Node[matrix.GetLength(0), matrix.GetLength(1)]; 
         for (int x = 0; x < matrix.GetLength(0); x++) { 
             for (int y = 0; y < matrix.GetLength(1); y++) { 
-                NodeGrid[x, y] = new Node(x, y); // You can also initialize other properties here if needed 
+                NodeGrid[x, y] = new Node(x, y);
+                if(NodeGrid[x, y].Wall){
+                    SetValue(x, y, 1); // color walls black
+                }
+                 // You can also initialize other properties here if needed 
             } 
         } 
     }

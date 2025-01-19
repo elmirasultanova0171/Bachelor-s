@@ -3,7 +3,7 @@ using System;
 public class AStarMemoryOptimizations
 {
     
-    public static void AStarBlocking(Grid grid, Node start, Node end, int tileSize)
+    public static void AStarBlocking(Grid grid, Node start, Node end, int tileSize, int threshold)
     {
        
        List<Node> openList = new List<Node>();
@@ -17,13 +17,28 @@ public class AStarMemoryOptimizations
 
            int lowestIndex = 0;
 
-           for (int i = 0; i < openList.Count; i += tileSize)
+           if (openList.Count > threshold)
             {
-                for (int j = i; j < Math.Min(i + tileSize, openList.Count); j++)
+                // Apply blocking technique if openList is large enough
+                for (int i = 0; i < openList.Count; i += tileSize)
                 {
-                    if (openList[j].F < openList[lowestIndex].F)
+                    for (int j = i; j < Math.Min(i + tileSize, openList.Count); j++)
                     {
-                        lowestIndex = j;
+                        if (openList[j].F < openList[lowestIndex].F)
+                        {
+                            lowestIndex = j;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // Regular approach without blocking
+                for (int i = 0; i < openList.Count; i++)
+                {
+                    if (openList[i].F < openList[lowestIndex].F)
+                    {
+                        lowestIndex = i;
                     }
                 }
             }
@@ -31,27 +46,19 @@ public class AStarMemoryOptimizations
             Node current = openList[lowestIndex];
 
             if(current==end){ 
-               // grid.SetValue(start.X, start.Y, 2); 
 
                 Node temp = current;
                 while (temp.Parent != null)
                 {
-                    //Console.WriteLine($"Setting path node at ({temp.X}, {temp.Y})");
-                  //  grid.SetValue(temp.X, temp.Y, 4); // Path node
                     temp = temp.Parent;
                 } 
-                //grid.SetValue(end.X, end.Y, 3); 
-                //visualizer.Update(); // Final update to show the path
-                //Console.WriteLine("done");
+;
                 return;
             }
 
             openList.Remove(current);
             closedList.Add(current);
            
-           if(current!=end){
-            //grid.SetValue(current.X, current.Y, 5); // closed color
-            }
             current.AddNeighbors(grid);
             List<Node> neighbors = current.Neighbors;
             for (int i = 0; i < neighbors.Count; i++){
@@ -66,20 +73,14 @@ public class AStarMemoryOptimizations
                     }else{
                         neighbor.G = tempG;
                         openList.Add(neighbor);
-                        //grid.SetValue(neighbor.X, neighbor.Y, 6); //next open color
                     }   
                     neighbor.H = Heuristic(neighbor, end);
-                    // In the class: neighbor.F = neighbor.G + neighbor.H;
                     neighbor.Parent = current;
-                   // Console.WriteLine(neighbor.X + "," + neighbor.Y);
                 }
 
                 
             }
 
-            // visualizer.Update();
-            //Console.WriteLine("-----------------------------------------------");
-             //grid.PrintGrid();
         }
 
         return;
