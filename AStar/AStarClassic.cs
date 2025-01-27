@@ -2,7 +2,7 @@
 
 public class AStarClassic
 {
-    /*
+    
     public static void Main(string[] args)
     {
         Grid grid = new Grid(100, 100);
@@ -10,7 +10,7 @@ public class AStarClassic
 
         Node start = grid.NodeGrid[0, 0];
         start.Wall = false;
-        Node end = grid.NodeGrid[99, 99];
+        Node end = grid.NodeGrid[53, 99];
         end.Wall = false;
 
 
@@ -22,7 +22,7 @@ public class AStarClassic
         visualizer.Run();
         
     }  
-    */
+    
 
     public static void AStar(Grid grid, Node start, Node end, AStarVisualizer visualizer){
        
