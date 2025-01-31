@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class TemporalLocality{
 
 
-    public bool sum(double[,] input, double[,] output, int size)
+    public bool t(double[,] input, double[,] output, int size)
     {
         for (int i = 0; i < size; i++)
         {
@@ -16,7 +16,7 @@ public class TemporalLocality{
         }
         return output[0, size - 1] != 0; // Assuming a boolean return value is based on this condition.
     }
-    public bool sumOptmzd(double[,] input, double[,] output, int size)
+    public bool tOptmzd(double[,] input, double[,] output, int size)
     {
         const int TileSize = 16;
 

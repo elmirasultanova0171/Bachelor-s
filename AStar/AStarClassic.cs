@@ -3,25 +3,25 @@
 public class AStarClassic
 {
     
-    public static void Main(string[] args)
-    {
-        Grid grid = new Grid(100, 100);
+    // public static void Main(string[] args)
+    // {
+    //     Grid grid = new Grid(100, 100);
        
 
-        Node start = grid.NodeGrid[0, 0];
-        start.Wall = false;
-        Node end = grid.NodeGrid[53, 99];
-        end.Wall = false;
+    //     Node start = grid.NodeGrid[0, 0];
+    //     start.Wall = false;
+    //     Node end = grid.NodeGrid[53, 99];
+    //     end.Wall = false;
 
 
-         Node[,] nodes = grid.NodeGrid;
+    //      Node[,] nodes = grid.NodeGrid;
 
 
-        AStarVisualizer visualizer = new AStarVisualizer(grid);
-        AStar(grid, start, end, visualizer);
-        visualizer.Run();
+    //     AStarVisualizer visualizer = new AStarVisualizer(grid);
+    //     AStar(grid, start, end, visualizer);
+    //     visualizer.Run();
         
-    }  
+    // }  
     
 
     public static void AStar(Grid grid, Node start, Node end, AStarVisualizer visualizer){
