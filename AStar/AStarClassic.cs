@@ -182,6 +182,7 @@ public class AStarClassic
         return;
     }
     
+
     
    
     
@@ -195,23 +196,6 @@ public class AStarClassic
    //To visualize the path
 
 
-
-    // just initializing with whatever values but they wilhave obstacles
-    private static void InitializeGrid(Grid grid)
-    {
-        for (int x = 0; x < grid.Rows; x++)
-        {
-            for (int y = 0; y < grid.Columns; y++)
-            {
-                if(grid.NodeGrid[x,y].Wall){
-                    grid.SetValue(x, y, 1); // Set all cells to 1 -> black
-                }
-                else{
-                    grid.SetValue(x, y, 0); // Set all cells to 0 -> white
-                }
-            }
-        }
-    }
 
 
 

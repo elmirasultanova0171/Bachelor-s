@@ -267,3 +267,6 @@ C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\AStar\obj\Release\net8.0
 C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\AStar\obj\Release\net8.0\AStar.pdb
 C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\AStar\obj\Release\net8.0\AStar.genruntimeconfig.cache
 C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\AStar\obj\Release\net8.0\ref\AStar.dll
+C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\AStar\bin\Release\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\AStar\bin\Release\net8.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\elmir\OneDrive\Desktop\Thesis\thesis_directory\AStar\bin\Release\net8.0\System.Diagnostics.DiagnosticSource.dll

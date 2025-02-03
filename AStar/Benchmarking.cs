@@ -8,6 +8,8 @@ using BenchmarkDotNet.Diagnostics.Windows.Configs;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Environments;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 
 /*
@@ -31,6 +33,7 @@ public class CustomConfig : ManualConfig
 [Config(typeof(CustomConfig))] // Use .NET 8.0 runtime
 public class AStarBenchmarking
 {
+    /*
     private Grid grid;
     private Node startNode;
     private Node endNode;
@@ -42,32 +45,50 @@ public class AStarBenchmarking
     public int threshold;
     [Params(16, 32, 64)]
     public int tileSize;
+    */
 
+    public  IMemoryCache cache;
+
+    public Dictionary<int, bool> hashMap;
+
+    public int[] lookups;
 
     [GlobalSetup]
     public void Setup()
     {
+        /*
         grid = new Grid(GridSize, GridSize); // Initialize the grid with the specified size
         startNode = grid.NodeGrid[0, 0]; 
         endNode = grid.NodeGrid[GridSize - 1, GridSize - 1]; 
         startNode.Wall = false;
         endNode.Wall = false;
+        */
+     
+            
+        // Prefetching
+        cache = new MemoryCache(new MemoryCacheOptions());
+
+        hashMap = new Dictionary<int, bool>
+        {
+            { 1, true }, { 2, false }, { 3, true }, { 4, true },
+            { 5, true }, { 6, false }, { 7, true }, { 8, true }
+        };
+
+        lookups = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 1, 3, 5, 7, 2, 4, 6, 8 };
         
     }
 
     [Benchmark]
-    public void BenchmarkAStar()
+    public void NoPrefetch()
     {
-        AStarClassic.AStarNoVisuals(grid, startNode, endNode); // Run the A* algorithm with visualization
-        AStarMemoryOptimizations.AStarBlocking(grid, startNode, endNode, tileSize, threshold); // Run the A* algorithm with blocking
-
+        int result = Prefetching.SolutionWithoutPrefetching(lookups, hashMap);
     }
 
 
     [Benchmark]
-    public void BenchmarkAStarBlocking()
+    public void Cache()
     {
-        AStarMemoryOptimizations.AStarBlocking(grid, startNode, endNode, tileSize, threshold); // Run the A* algorithm with blocking
+        int resultCaching = Prefetching.SolutionWithCaching(lookups, hashMap, cache);
     }
 
 }
@@ -84,8 +105,6 @@ public class Program
 }
 
 
-/*
 
 
 
-*/

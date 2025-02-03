@@ -12,7 +12,8 @@ public class Grid
         this.Rows = rows; 
         this.Columns = columns;
         matrix = new int[rows, columns]; 
-        InitializeNodeGrid(); 
+       
+           InitializeNodeGrid();   
     }
 
     public void SetValue(int row, int column, int value)
