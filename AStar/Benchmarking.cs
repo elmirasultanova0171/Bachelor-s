@@ -25,7 +25,7 @@ public class CustomConfig : ManualConfig
         AddDiagnoser(new EtwProfiler()); // Measure CPU usage and other ETW events
         AddJob(Job.Default
             .WithWarmupCount(3) // Set the number of warmup iterations
-            .WithIterationCount(10) // Set the number of measurement iterations
+            .WithIterationCount(3) // Set the number of measurement iterations
             .WithRuntime(CoreRuntime.Core80)); // Use .NET 8.0 runtime
     }
 }
@@ -53,6 +53,8 @@ public class AStarBenchmarking
 
     public int[] lookups;
 
+    int lookAhead = 2;
+
     [GlobalSetup]
     public void Setup()
     {
@@ -75,6 +77,8 @@ public class AStarBenchmarking
         };
 
         lookups = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 1, 3, 5, 7, 2, 4, 6, 8 };
+
+        
         
     }
 
@@ -86,9 +90,13 @@ public class AStarBenchmarking
 
 
     [Benchmark]
-    public void Cache()
+    public unsafe void Cache()
     {
-        int resultCaching = Prefetching.SolutionWithCaching(lookups, hashMap, cache);
+        fixed (int* lookupPtr = lookups)
+        {
+            int resultPrefetching = Prefetching.SolutionWithPrefetching(lookupPtr, lookups.Length, hashMap, lookAhead);
+            
+        }
     }
 
 }

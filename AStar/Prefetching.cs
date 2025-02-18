@@ -22,7 +22,7 @@ public class Prefetching{
         for (int i = 0; i < lookupCount - lookAhead; i++)
         {
             int val = *(lookupPtr + i);
-            if (hashMap.ContainsKey(val) && hashMap[val]) //try getValue
+            if (hashMap.TryGetValue(val, out bool value) && hashMap[val]) //try getValue
                 result += GetSumOfDigits(val);
 
             // Simulate prefetching
@@ -34,7 +34,7 @@ public class Prefetching{
         for (int i = lookupCount - lookAhead; i < lookupCount; i++)
         {
             int val = *(lookupPtr + i);
-            if (hashMap.ContainsKey(val) && hashMap[val])
+            if (hashMap.TryGetValue(val, out bool value) && hashMap[val])
                 result += GetSumOfDigits(val);
         }
 
@@ -49,8 +49,8 @@ public class Prefetching{
         for (int i = 0; i < lookups.Length; i++)
         {
             int val = lookups[i];
-            if (hashMap.ContainsKey(val) && hashMap[val])
-                result += GetSumOfDigits(val);
+            if (hashMap.TryGetValue(val, out bool value) && hashMap[val]){
+                result += GetSumOfDigits(val);}
         }
 
         return result;
@@ -88,7 +88,7 @@ public class Prefetching{
         };
         var lookups = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 1, 3, 5, 7, 2, 4, 6, 8 };
         int lookAhead = 2;
-            int result = SolutionWithoutPrefetching(lookups, hashMap);
+        int result = SolutionWithoutPrefetching(lookups, hashMap);
                 Console.WriteLine($"Result without Prefetching: {result}");
 
 
