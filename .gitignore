@@ -1,0 +1,58 @@
+# .NET
+*.dll
+*.exe
+*.pdb
+*.user
+*.lock
+*.log
+*.cache
+*.msi
+*.appx
+*.appxbundle
+*.log
+*.vs
+*.DS_Store
+
+# Ignore Visual Studio temporary files, build results, and
+# folder-based project outputs
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Zz]ure*\bin/
+[Aa][Zz]ure*\obj/
+[Aa][Zz]ure*.Deploy/
+bin/
+obj/
+BenchmarkDotNet.Artifacts/
+
+# User-specific files
+*.rsuser
+*.rsuser.rsuser
+*.usr
+*.userprefs
+*.suo
+
+# Auto-generated files
+_gen
+_recompile
+*.g.*
+*.i.*
+
+# EntityFramework Migrations
+[Mm]igrations/
+
+# Include dependencies
+!.nuget/
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# OS-generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+*.swp
