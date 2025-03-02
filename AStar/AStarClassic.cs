@@ -2,26 +2,31 @@
 
 public class AStarClassic
 {
-    
-    // public static void Main(string[] args)
-    // {
-    //     Grid grid = new Grid(100, 100);
+   
+    public static void Main2(string[] args)
+    {
+        GridS gridS = new GridS(3, 3);
        
-
-    //     Node start = grid.NodeGrid[0, 0];
-    //     start.Wall = false;
-    //     Node end = grid.NodeGrid[53, 99];
-    //     end.Wall = false;
-
-
-    //      Node[,] nodes = grid.NodeGrid;
+        NodeS startS = gridS.NodeGrid[0, 0];
+        startS.Wall = false;
+        NodeS endS = gridS.NodeGrid[2, 2];
+        endS.Wall = false;
 
 
-    //     AStarVisualizer visualizer = new AStarVisualizer(grid);
-    //     AStar(grid, start, end, visualizer);
-    //     visualizer.Run();
+        Grid grid = new Grid(3, 3);
+       
+        Node start = grid.NodeGrid[0, 0];
+        start.Wall = false;
+        Node end = grid.NodeGrid[2, 2];
+        end.Wall = false;
+       
+      //  AStarMemoryOptimizations.AStarStackAlloc(gridS, startS, endS);
+          AStarMemoryOptimizations.AStarStruct(gridS, startS, endS);
+        Console.WriteLine("done");
+        //AStarNoVisuals(grid, start, end);
+        //Console.WriteLine("done");
         
-    // }  
+    }  
     
 
     public static void AStar(Grid grid, Node start, Node end, AStarVisualizer visualizer){
@@ -107,11 +112,6 @@ public class AStarClassic
 
         Node[,] nodes = grid.NodeGrid;
 
-        for (int i = 0; i<grid.Rows; i++ ){
-            for (int j = 0; j < grid.Columns; j++ ){
-                nodes[i,j].AddNeighbors(grid);
-            }
-        }
         
         openList.Add(start);
 
@@ -146,10 +146,7 @@ public class AStarClassic
             openList.Remove(current);
             closedList.Add(current);
            
-           if(current!=end){
-            //grid.SetValue(current.X, current.Y, 5); // closed color
-            }
-            
+            current.AddNeighbors(grid);
             List<Node> neighbors = current.Neighbors;
             for (int i = 0; i < neighbors.Count; i++){
                 Node neighbor = neighbors[i];
@@ -177,17 +174,13 @@ public class AStarClassic
             // visualizer.Update();
             //Console.WriteLine("-----------------------------------------------");
              //grid.PrintGrid();
+           // Console.WriteLine(current.X + "," + current.Y);
         }
 
         return;
     }
     
 
-    
-   
-    
-    
-    
     public static int Heuristic(Node a, Node b)
     {
         return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
@@ -197,7 +190,7 @@ public class AStarClassic
 
 
 
-
+   
 
 
  // Some tests form here

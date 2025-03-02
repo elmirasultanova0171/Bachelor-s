@@ -24,49 +24,80 @@ public class CustomConfig : ManualConfig
         AddDiagnoser(MemoryDiagnoser.Default); // Measure memory usage
         AddDiagnoser(new EtwProfiler()); // Measure CPU usage and other ETW events
         AddJob(Job.Default
-            .WithWarmupCount(3) // Set the number of warmup iterations
-            .WithIterationCount(3) // Set the number of measurement iterations
+            .WithWarmupCount(15) // Set the number of warmup iterations
+            .WithIterationCount(15) // Set the number of measurement iterations
             .WithRuntime(CoreRuntime.Core80)); // Use .NET 8.0 runtime
     }
 }
 
+
+
 [Config(typeof(CustomConfig))] // Use .NET 8.0 runtime
 public class AStarBenchmarking
 {
-    /*
+    private GridS gridS;
+    private NodeS startNodeS;
+    private NodeS endNodeS;
+
+    
     private Grid grid;
+
+    private Grid grid2;
     private Node startNode;
     private Node endNode;
 
-    [Params(50, 100, 200)] // Different sizes of the grid
+    [Params(50, 100, 500)] // Different sizes of the grid
     public int GridSize;
 
+
+    /*
     [Params(50, 100, 200)] 
     public int threshold;
     [Params(16, 32, 64)]
     public int tileSize;
-    */
+    
 
     public  IMemoryCache cache;
 
     public Dictionary<int, bool> hashMap;
 
-    public int[] lookups;
+    public int[] lookups = new int[100];
 
-    int lookAhead = 2;
+    [Params(1, 2, 3, 4, 5)]
+    public int lookAhead;
+
+    Random rnd = new Random();
+
+
+    [Params(100, 1000, 10000)]
+    public int size;
+    */
 
     [GlobalSetup]
     public void Setup()
     {
-        /*
+        
+        gridS = new GridS(GridSize, GridSize); // Initialize the grid with the specified size
+        startNodeS = gridS.NodeGrid[0, 0];
+        endNodeS = gridS.NodeGrid[GridSize - 1, GridSize - 1];
+        startNodeS.Wall = false;
+        endNodeS.Wall = false;
+
         grid = new Grid(GridSize, GridSize); // Initialize the grid with the specified size
-        startNode = grid.NodeGrid[0, 0]; 
-        endNode = grid.NodeGrid[GridSize - 1, GridSize - 1]; 
+        startNode = grid.NodeGrid[0, 0];
+        endNode = grid.NodeGrid[GridSize - 1, GridSize - 1];
         startNode.Wall = false;
         endNode.Wall = false;
-        */
+ 
+        //blocking
+        grid2 = new Grid(GridSize, GridSize, true); // Initialize the grid with the specified size
+        startNode = grid2.NodeGrid[0, 0];
+        endNode = grid2.NodeGrid[GridSize - 1, GridSize - 1];
+        startNode.Wall = false;
+        endNode.Wall = false;
+        
      
-            
+         /*   
         // Prefetching
         cache = new MemoryCache(new MemoryCacheOptions());
 
@@ -76,28 +107,33 @@ public class AStarBenchmarking
             { 5, true }, { 6, false }, { 7, true }, { 8, true }
         };
 
-        lookups = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 1, 3, 5, 7, 2, 4, 6, 8 };
-
-        
-        
-    }
-
-    [Benchmark]
-    public void NoPrefetch()
-    {
-        int result = Prefetching.SolutionWithoutPrefetching(lookups, hashMap);
-    }
-
-
-    [Benchmark]
-    public unsafe void Cache()
-    {
-        fixed (int* lookupPtr = lookups)
+        for (int i = 0; i < lookups.Length; i++)
         {
-            int resultPrefetching = Prefetching.SolutionWithPrefetching(lookupPtr, lookups.Length, hashMap, lookAhead);
-            
+            lookups[i] = rnd.Next(1, 9);
         }
+            */
+        
+        
     }
+
+     [Benchmark]
+    public void WithStackAlloc()
+    {
+        AStarMemoryOptimizations.AStarStackAlloc(gridS, startNodeS, endNodeS);
+    }
+
+    [Benchmark]
+    public void WithStruct()
+    {
+        AStarMemoryOptimizations.AStarStruct(gridS, startNodeS, endNodeS);
+    }
+
+    [Benchmark]
+    public void WithoutStackAlloc()
+    {
+        AStarClassic.AStarNoVisuals(grid, startNode, endNode);
+    }
+
 
 }
 
@@ -110,8 +146,7 @@ public class Program
         Console.WriteLine(summary);
     }
     
-}
-
+} 
 
 
 

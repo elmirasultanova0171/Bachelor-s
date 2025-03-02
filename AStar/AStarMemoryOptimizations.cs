@@ -6,7 +6,7 @@ public class AStarMemoryOptimizations
     public static void AStarBlocking(Grid grid, Node start, Node end, int tileSize, int threshold)
     {
        
-       List<Node> openList = new List<Node>();
+        List<Node> openList = new List<Node>();
         List<Node> closedList = new List<Node>();
 
         Node[,] nodes = grid.NodeGrid;
@@ -19,7 +19,6 @@ public class AStarMemoryOptimizations
 
            if (openList.Count > threshold)
             {
-                // Apply blocking technique if openList is large enough
                 for (int i = 0; i < openList.Count; i += tileSize)
                 {
                     for (int j = i; j < Math.Min(i + tileSize, openList.Count); j++)
@@ -33,7 +32,6 @@ public class AStarMemoryOptimizations
             }
             else
             {
-                // Regular approach without blocking
                 for (int i = 0; i < openList.Count; i++)
                 {
                     if (openList[i].F < openList[lowestIndex].F)
@@ -41,6 +39,7 @@ public class AStarMemoryOptimizations
                         lowestIndex = i;
                     }
                 }
+                
             }
 
             Node current = openList[lowestIndex];
@@ -51,8 +50,7 @@ public class AStarMemoryOptimizations
                 while (temp.Parent != null)
                 {
                     temp = temp.Parent;
-                } 
-;
+                }
                 return;
             }
 
@@ -61,6 +59,7 @@ public class AStarMemoryOptimizations
            
             current.AddNeighbors(grid);
             List<Node> neighbors = current.Neighbors;
+            
             for (int i = 0; i < neighbors.Count; i++){
                 Node neighbor = neighbors[i];
 
@@ -87,92 +86,282 @@ public class AStarMemoryOptimizations
        
     }
     
-    
-    public static void AStarPrefetching(Grid grid, Node start, Node end){
-       
-        List<Node> openList = new List<Node>();
-        List<Node> closedList = new List<Node>();
+   
 
-        Node[,] nodes = grid.NodeGrid;
+    public static void AStarStackAlloc(GridS grid, NodeS start, NodeS end)
+    {
+        List<NodeS> openList = new List<NodeS>();
+        List<NodeS> closedList = new List<NodeS>();
+        Span<NodeS> neighbors = stackalloc NodeS[8];
 
-        for (int i = 0; i<grid.Rows; i++ ){
-            for (int j = 0; j < grid.Columns; j++ ){
-                nodes[i,j].AddNeighbors(grid);
-            }
-        }
-        
+
         openList.Add(start);
 
-        while(openList.Count > 0){
-
-           int lowestIndex = 0;
-
-           for(int i = 0; i < openList.Count; i++){
-            if(openList[i].F <openList[lowestIndex].F){
-                lowestIndex=i;
-            }
-           }
-
-            Node current = openList[lowestIndex];
-
-            if(current==end){ 
-               // grid.SetValue(start.X, start.Y, 2); 
-
-                Node temp = current;
-                while (temp.Parent != null)
+        while (openList.Count > 0)
+        {
+            int lowestIndex = 0;
+            for (int i = 0; i < openList.Count; i++)
+            {
+                if (openList[i].F < openList[lowestIndex].F)
                 {
-                    //Console.WriteLine($"Setting path node at ({temp.X}, {temp.Y})");
-                  //  grid.SetValue(temp.X, temp.Y, 4); // Path node
-                    temp = temp.Parent;
-                } 
-                //grid.SetValue(end.X, end.Y, 3); 
-                //visualizer.Update(); // Final update to show the path
-                //Console.WriteLine("done");
-                return;
+                    lowestIndex = i;
+                }
             }
 
-            openList.Remove(current);
+            NodeS current = openList[lowestIndex];
+
+            if (current.X == end.X && current.Y == end.Y)
+            {
+                NodeS temp = current;
+                while (temp.ParentX != -1 && temp.ParentY != -1)
+                {
+                    int parentX = temp.ParentX;
+                    int parentY = temp.ParentY;
+                    temp = grid.NodeGrid[parentX, parentY];
+                }
+                return; // Path found, exit.
+            }
+
+            openList.RemoveAt(lowestIndex);
             closedList.Add(current);
-           
-           if(current!=end){
-            //grid.SetValue(current.X, current.Y, 5); // closed color
-            }
             
-            List<Node> neighbors = current.Neighbors;
-            for (int i = 0; i < neighbors.Count; i++){
-                Node neighbor = neighbors[i];
-
-                if(!closedList.Contains(neighbor) && !neighbor.Wall){
-                    int tempG = current.G + 1;         //assuming all nodes have a cost of 1
-                    if(openList.Contains(neighbor)){
-                        if(tempG < neighbor.G){
-                            neighbor.G = tempG;
-                        }
-                    }else{
-                        neighbor.G = tempG;
-                        openList.Add(neighbor);
-                        //grid.SetValue(neighbor.X, neighbor.Y, 6); //next open color
-                    }   
-                    neighbor.H = Heuristic(neighbor, end);
-                    // In the class: neighbor.F = neighbor.G + neighbor.H;
-                    neighbor.Parent = current;
-                   // Console.WriteLine(neighbor.X + "," + neighbor.Y);
+            int neighborCount = AddNeighbors(grid, current, neighbors);  
+            
+            for (int i = 0; i < neighbors.Length; i++)
+            {
+                //Span?
+                NodeS neighbor = neighbors[i];
+                if (closedList.Any(n => n.X == neighbor.X && n.Y == neighbor.Y) || neighbor.Wall)
+                {
+                    continue; 
                 }
 
-                
+                int tempG = current.G + 1; // Assuming uniform cost for neighbors
+
+                if (!openList.Any(n => n.X == neighbor.X && n.Y == neighbor.Y))
+                {
+                    // New node: add it
+                    neighbor.G = tempG;
+                    neighbor.H = HeuristicS(neighbor, end);
+                    neighbor.ParentX = current.X;
+                    neighbor.ParentY = current.Y;
+                    openList.Add(neighbor);
+                }
+                else
+                {
+                    
+                    NodeS existingNode = openList.First(n => n.X == neighbor.X && n.Y == neighbor.Y);
+                    if (tempG < existingNode.G)
+                    {
+                        // Update G, H, and parent if this path is better
+                        existingNode.G = tempG;
+                        existingNode.H = HeuristicS(existingNode, end);
+                        existingNode.ParentX = current.X;
+                        existingNode.ParentY = current.Y;
+                    }
+                }
             }
 
-            // visualizer.Update();
-            //Console.WriteLine("-----------------------------------------------");
-             //grid.PrintGrid();
+           // Console.WriteLine(current.X + "," + current.Y);
         }
 
-        return;
+        return; // No path found
     }
+
+
+    public static void AStarStruct(GridS grid, NodeS start, NodeS end)
+{
     
-    
+        List<NodeS> openList = new List<NodeS>();
+        List<NodeS> closedList = new List<NodeS>();
+        List<NodeS> neighbors = new List<NodeS>();
+
+
+        openList.Add(start);
+
+        while (openList.Count > 0)
+        {
+            int lowestIndex = 0;
+            for (int i = 0; i < openList.Count; i++)
+            {
+                if (openList[i].F < openList[lowestIndex].F)
+                {
+                    lowestIndex = i;
+                }
+            }
+
+            NodeS current = openList[lowestIndex];
+
+            if (current.X == end.X && current.Y == end.Y)
+            {
+                NodeS temp = current;
+                while (temp.ParentX != -1 && temp.ParentY != -1)
+                {
+                    int parentX = temp.ParentX;
+                    int parentY = temp.ParentY;
+                    temp = grid.NodeGrid[parentX, parentY];
+                }
+                return; // Path found, exit.
+            }
+
+            openList.RemoveAt(lowestIndex);
+            closedList.Add(current);
+            neighbors.Clear();
+            int neighborCount = AddNeighbors2(grid, current, neighbors);  
+            
+            for (int i = 0; i < neighbors.Count; i++)
+            {
+                //Span?
+                NodeS neighbor = neighbors[i];
+                if (closedList.Any(n => n.X == neighbor.X && n.Y == neighbor.Y) || neighbor.Wall)
+                {
+                    continue; 
+                }
+
+                int tempG = current.G + 1; // Assuming uniform cost for neighbors
+
+                if (!openList.Any(n => n.X == neighbor.X && n.Y == neighbor.Y))
+                {
+                    // New node: add it
+                    neighbor.G = tempG;
+                    neighbor.H = HeuristicS(neighbor, end);
+                    neighbor.ParentX = current.X;
+                    neighbor.ParentY = current.Y;
+                    openList.Add(neighbor);
+                }
+                else
+                {
+                    
+                    NodeS existingNode = openList.First(n => n.X == neighbor.X && n.Y == neighbor.Y);
+                    if (tempG < existingNode.G)
+                    {
+                        // Update G, H, and parent if this path is better
+                        existingNode.G = tempG;
+                        existingNode.H = HeuristicS(existingNode, end);
+                        existingNode.ParentX = current.X;
+                        existingNode.ParentY = current.Y;
+                    }
+                }
+            }
+
+           // Console.WriteLine(current.X + "," + current.Y);
+        }
+
+        return; // No path found
+}
+
+
+
+
+
+
+
+
+
+    public static int AddNeighbors2(GridS grid, NodeS nodeS, List<NodeS> neighbors)
+    {
+        int x = nodeS.X;
+        int y = nodeS.Y;
+        int count = 0;
+
+        if (x < grid.Columns - 1)
+        {
+            neighbors.Add(grid.NodeGrid[x + 1, y]);
+            count++;
+        }
+        if (x > 0)
+        {
+            neighbors.Add(grid.NodeGrid[x - 1, y]);
+            count++;
+        }
+        if (y < grid.Rows - 1)
+        {
+            neighbors.Add(grid.NodeGrid[x, y + 1]);
+            count++;
+        }
+        if (y > 0)
+        {
+            neighbors.Add(grid.NodeGrid[x, y - 1]);
+            count++;
+        }
+
+        // Adding diagonal neighbors
+        if (x < grid.Columns - 1 && y < grid.Rows - 1)
+        {
+            neighbors.Add(grid.NodeGrid[x + 1, y + 1]);
+            count++;
+        }
+        if (x < grid.Columns - 1 && y > 0)
+        {
+            neighbors.Add(grid.NodeGrid[x + 1, y - 1]);
+            count++;
+        }
+        if (x > 0 && y < grid.Rows - 1)
+        {
+            neighbors.Add(grid.NodeGrid[x - 1, y + 1]);
+            count++;
+        }
+        if (x > 0 && y > 0)
+        {
+            neighbors.Add(grid.NodeGrid[x - 1, y - 1]);
+            count++;
+        }
+
+        return count; // Return how many valid neighbors were added
+    }
+
+
+   public static int AddNeighbors(GridS grid, NodeS nodeS, Span<NodeS> neighbors)
+    {
+        int x = nodeS.X;
+        int y = nodeS.Y;
+        int count = 0;
+
+        if (x < grid.Columns - 1)
+        {
+            neighbors[count++] = grid.NodeGrid[x + 1, y];
+        }
+        if (x > 0)
+        {
+            neighbors[count++] = grid.NodeGrid[x - 1, y];
+        }
+        if (y < grid.Rows - 1)
+        {
+            neighbors[count++] = grid.NodeGrid[x, y + 1];
+        }
+        if (y > 0)
+        {
+            neighbors[count++] = grid.NodeGrid[x, y - 1];
+        }
+
+        // Adding diagonal neighbors
+        if (x < grid.Columns - 1 && y < grid.Rows - 1)
+        {
+            neighbors[count++] = grid.NodeGrid[x + 1, y + 1];
+        }
+        if (x < grid.Columns - 1 && y > 0)
+        {
+            neighbors[count++] = grid.NodeGrid[x + 1, y - 1];
+        }
+        if (x > 0 && y < grid.Rows - 1)
+        {
+            neighbors[count++] = grid.NodeGrid[x - 1, y + 1];
+        }
+        if (x > 0 && y > 0)
+        {
+            neighbors[count++] = grid.NodeGrid[x - 1, y - 1];
+        }
+
+        return count; // Return how many valid neighbors were added
+    }
+
     
     public static int Heuristic(Node a, Node b)
+    {
+        return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
+    }
+
+    public static int HeuristicS(NodeS a, NodeS b)
     {
         return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
     }

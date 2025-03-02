@@ -56,3 +56,12 @@ ehthumbs.db
 .Spotlight-V100
 .Trashes
 *.swp
+
+# Temporary and backup files
+~$*.docx
+~WRL*.tmp
+
+BenchmarkDotNet.Artifacts/*.etl
+
+*.etl
+

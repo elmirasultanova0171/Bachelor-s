@@ -1,31 +1,19 @@
 using System;
 
-public class Grid
+public struct GridS
 {
     public int Rows { get; set; } 
     public int Columns { get; set; }
     private int[,] matrix; 
-    public Node[,] NodeGrid { get; set; } = null!;
+    public NodeS[,] NodeGrid { get; set; } = null!;
  
 
-    public Grid(int rows, int columns) { 
+    public GridS(int rows, int columns) { 
         this.Rows = rows; 
         this.Columns = columns;
         matrix = new int[rows, columns]; 
        
            InitializeNodeGrid();   
-    }
-
-    public Grid(int rows, int columns, bool x) { 
-        this.Rows = rows; 
-        this.Columns = columns;
-        if(x){
-            matrix = new int[rows, columns]; 
-            InitializeNodeGridBlocking();   
-        }
-        else{
-            matrix = new int[rows, columns]; 
-        }
     }
 
     public void SetValue(int row, int column, int value)
@@ -65,10 +53,10 @@ public class Grid
     }
 
     private void InitializeNodeGrid() { 
-        NodeGrid = new Node[matrix.GetLength(0), matrix.GetLength(1)]; 
+        NodeGrid = new NodeS[matrix.GetLength(0), matrix.GetLength(1)]; 
         for (int x = 0; x < matrix.GetLength(0); x++) { 
             for (int y = 0; y < matrix.GetLength(1); y++) { 
-                NodeGrid[x, y] = new Node(x, y);
+                NodeGrid[x, y] = new NodeS(x, y);
                 if(NodeGrid[x, y].Wall){
                     SetValue(x, y, 1); // color walls black
                 }
@@ -76,34 +64,6 @@ public class Grid
             } 
         } 
     }
-
-    private void InitializeNodeGridBlocking() { 
-        NodeGrid = new Node[matrix.GetLength(0), matrix.GetLength(1)]; 
-        int blockSize = 16; // Tunable, depends on CPU cache size
-
-        for (int xb = 0; xb < matrix.GetLength(0); xb += blockSize)
-        {
-            for (int yb = 0; yb < matrix.GetLength(1); yb += blockSize)
-            {
-                // Process a small block at a time
-                for (int x = xb; x < Math.Min(xb + blockSize, matrix.GetLength(0)); x++)
-                {
-                    for (int y = yb; y < Math.Min(yb + blockSize, matrix.GetLength(1)); y++)
-                    {
-                        NodeGrid[x, y] = new Node(x, y);
-
-                        if (NodeGrid[x, y].Wall)
-                        {
-                            SetValue(x, y, 1); // Color walls black
-                        }
-                    }
-                }
-            }
-        }
-
-    }
-
-
 
 }
 
