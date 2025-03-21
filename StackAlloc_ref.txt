@@ -1,0 +1,11 @@
+| Method                    | GridSize | Mean           | Error         | StdDev      | Gen0       | Gen1      | Allocated    |
+|-------------------------- |--------- |---------------:|--------------:|------------:|-----------:|----------:|-------------:|
+| WithoutStackAllocOrStruct | 100      |      98.035 ms |    66.0986 ms |  17.1656 ms |          - |         - |     23.36 KB |
+| WithStackAlloc            | 100      |       2.471 ms |     0.0145 ms |   0.0022 ms |    42.9688 |         - |    366.88 KB |
+| WithStruct                | 100      |       1.779 ms |     0.0324 ms |   0.0084 ms |    37.1094 |    1.9531 |    306.69 KB |
+| WithoutStackAllocOrStruct | 200      |     148.859 ms |    93.1746 ms |  24.1972 ms |          - |         - |      31.4 KB |
+| WithStackAlloc            | 200      |      10.130 ms |     0.0534 ms |   0.0083 ms |    78.1250 |         - |    722.81 KB |
+| WithStruct                | 200      |  33,611.763 ms |   214.0701 ms |  33.1276 ms |  7000.0000 |         - |  66998.05 KB |
+| WithoutStackAllocOrStruct | 300      |     300.834 ms |   169.4775 ms |  44.0128 ms |          - |         - |     38.42 KB |
+| WithStackAlloc            | 300      | 173,454.022 ms | 3,059.8547 ms | 794.6345 ms | 18000.0000 | 2000.0000 | 154219.38 KB |
+| WithStruct                | 300      |      15.335 ms |     0.1307 ms |   0.0339 ms |    93.7500 |         - |    874.94 KB |

@@ -16,12 +16,12 @@ public class Grid
            InitializeNodeGrid();   
     }
 
-    public Grid(int rows, int columns, bool x) { 
+    public Grid(int rows, int columns, bool x, int blockSize) { 
         this.Rows = rows; 
         this.Columns = columns;
         if(x){
             matrix = new int[rows, columns]; 
-            InitializeNodeGridBlocking();   
+            InitializeNodeGridBlocking(blockSize);   
         }
         else{
             matrix = new int[rows, columns]; 
@@ -77,10 +77,8 @@ public class Grid
         } 
     }
 
-    private void InitializeNodeGridBlocking() { 
+    private void InitializeNodeGridBlocking(int blockSize) { 
         NodeGrid = new Node[matrix.GetLength(0), matrix.GetLength(1)]; 
-        int blockSize = 16; // Tunable, depends on CPU cache size
-
         for (int xb = 0; xb < matrix.GetLength(0); xb += blockSize)
         {
             for (int yb = 0; yb < matrix.GetLength(1); yb += blockSize)

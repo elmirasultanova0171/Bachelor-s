@@ -21,7 +21,7 @@ public class AStarClassic
         end.Wall = false;
        
       //  AStarMemoryOptimizations.AStarStackAlloc(gridS, startS, endS);
-          AStarMemoryOptimizations.AStarStruct(gridS, startS, endS);
+        //  AStarMemoryOptimizations.AStarStruct(gridS, startS, endS);
         Console.WriteLine("done");
         //AStarNoVisuals(grid, start, end);
         //Console.WriteLine("done");

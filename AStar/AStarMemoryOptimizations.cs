@@ -88,7 +88,7 @@ public class AStarMemoryOptimizations
     
    
 
-    public static void AStarStackAlloc(GridS grid, NodeS start, NodeS end)
+    public static void AStarStackAlloc(ref GridS grid, ref NodeS start, ref NodeS end)
     {
         List<NodeS> openList = new List<NodeS>();
         List<NodeS> closedList = new List<NodeS>();
@@ -169,7 +169,7 @@ public class AStarMemoryOptimizations
     }
 
 
-    public static void AStarStruct(GridS grid, NodeS start, NodeS end)
+    public static void AStarStruct(ref GridS grid, ref NodeS start, ref NodeS end)
 {
     
         List<NodeS> openList = new List<NodeS>();

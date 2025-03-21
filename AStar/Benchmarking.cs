@@ -24,8 +24,8 @@ public class CustomConfig : ManualConfig
         AddDiagnoser(MemoryDiagnoser.Default); // Measure memory usage
         AddDiagnoser(new EtwProfiler()); // Measure CPU usage and other ETW events
         AddJob(Job.Default
-            .WithWarmupCount(15) // Set the number of warmup iterations
-            .WithIterationCount(15) // Set the number of measurement iterations
+            .WithWarmupCount(5) // Set the number of warmup iterations
+            .WithIterationCount(5) // Set the number of measurement iterations
             .WithRuntime(CoreRuntime.Core80)); // Use .NET 8.0 runtime
     }
 }
@@ -46,11 +46,19 @@ public class AStarBenchmarking
     private Node startNode;
     private Node endNode;
 
-    [Params(50, 100, 500)] // Different sizes of the grid
+    [Params(100, 200, 300)] // Different sizes of the grid
     public int GridSize;
 
 
+
+
     /*
+
+        [Params(50, 100, 200)]
+    public int threshold;
+
+    [Params(16, 32)]
+    public int tileSize;
     [Params(50, 100, 200)] 
     public int threshold;
     [Params(16, 32, 64)]
@@ -89,14 +97,6 @@ public class AStarBenchmarking
         startNode.Wall = false;
         endNode.Wall = false;
  
-        //blocking
-        grid2 = new Grid(GridSize, GridSize, true); // Initialize the grid with the specified size
-        startNode = grid2.NodeGrid[0, 0];
-        endNode = grid2.NodeGrid[GridSize - 1, GridSize - 1];
-        startNode.Wall = false;
-        endNode.Wall = false;
-        
-     
          /*   
         // Prefetching
         cache = new MemoryCache(new MemoryCacheOptions());
@@ -116,6 +116,14 @@ public class AStarBenchmarking
         
     }
 
+    
+  
+   
+
+    /*
+
+     
+
      [Benchmark]
     public void WithStackAlloc()
     {
@@ -133,6 +141,29 @@ public class AStarBenchmarking
     {
         AStarClassic.AStarNoVisuals(grid, startNode, endNode);
     }
+    
+
+   */
+
+   [Benchmark]
+    public void WithoutStackAllocOrStruct()
+    {
+        AStarClassic.AStarNoVisuals(grid, startNode, endNode);
+    }
+
+    [Benchmark]
+    public void WithStackAlloc()
+    {
+        AStarMemoryOptimizations.AStarStackAlloc(ref gridS, ref startNodeS, ref endNodeS);
+    }
+
+
+      [Benchmark]
+    public void WithStruct()
+    {
+        AStarMemoryOptimizations.AStarStruct(ref gridS, ref startNodeS, ref endNodeS);
+    }
+
 
 
 }
