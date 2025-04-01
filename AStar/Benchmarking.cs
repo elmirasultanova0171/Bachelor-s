@@ -46,7 +46,7 @@ public class AStarBenchmarking
     private Node startNode;
     private Node endNode;
 
-    [Params(100, 200, 300)] // Different sizes of the grid
+    [Params(300)] // Different sizes of the grid
     public int GridSize;
 
 
@@ -157,13 +157,25 @@ public class AStarBenchmarking
         AStarMemoryOptimizations.AStarStackAlloc(ref gridS, ref startNodeS, ref endNodeS);
     }
 
+    [Benchmark]
+    public void WithStack2()
+    {
+        AStarMemoryOptimizations.AStarStackAlloc2(ref gridS, ref startNodeS, ref endNodeS);
+    }
 
+   /* [Benchmark]
+    public void WithStack2()
+    {
+       // AStarMemoryOptimizations.AStarStackAlloc2(ref gridS, ref startNodeS, ref endNodeS);
+    }
+
+    /*
       [Benchmark]
     public void WithStruct()
     {
         AStarMemoryOptimizations.AStarStruct(ref gridS, ref startNodeS, ref endNodeS);
     }
-
+    */
 
 
 }

@@ -20,10 +20,31 @@ public struct NodeS
 
         Wall = false;
 
+        
+
         Random random = new Random();
         if (random.Next(0, 100) < 20)
         {
             Wall = true;
         }
+
+        
+    }
+
+     public bool Equals(NodeS other)
+    {
+        return this.X == other.X && this.Y == other.Y; 
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is NodeS)
+            return Equals((NodeS)obj);
+        return false;
+    }
+    
+    public override int GetHashCode()    //to avoid using Any() and just use Contains()
+    {
+        return HashCode.Combine(X, Y); 
     }
 }

@@ -9,3 +9,26 @@
 | WithoutStackAllocOrStruct | 300      |     159.399 ms |  93.4514 ms | 24.2690 ms |          - |         - |     49.46 KB |
 | WithStackAlloc            | 300      | 248,453.232 ms | 107.3157 ms | 27.8695 ms | 18000.0000 | 1000.0000 | 154849.57 KB |
 | WithStruct                | 300      |      16.881 ms |   0.1012 ms |  0.0263 ms |    93.7500 |         - |    913.71 KB |
+
+before
+
+| Method                    | GridSize | Mean          | Error        | StdDev     | Gen0       | Gen1      | Allocated    |
+|-------------------------- |--------- |--------------:|-------------:|-----------:|-----------:|----------:|-------------:|
+| WithoutStackAllocOrStruct | 300      |     162.48 ms |   103.041 ms |  26.759 ms |          - |         - |     44.45 KB |
+| WithStackAlloc            | 300      | 172,667.50 ms | 2,320.222 ms | 602.554 ms | 18000.0000 | 1000.0000 | 154642.16 KB | 
+| WithStruct                | 300      |      19.18 ms |     0.064 ms |   0.017 ms |    93.7500 |         - |    975.63 KB |
+
+
+| Method                    | GridSize | Mean      | Error      | StdDev    | Gen0    | Allocated |
+|-------------------------- |--------- |----------:|-----------:|----------:|--------:|----------:|
+| WithoutStackAllocOrStruct | 300      | 170.28 ms | 108.263 ms | 28.116 ms |       - |  53.46 KB |
+| WithStackAlloc            | 300      |  16.96 ms |   0.076 ms |  0.020 ms | 93.7500 | 911.07 KB |
+| WithStack2                | 300      |  17.34 ms |   0.105 ms |  0.027 ms | 93.7500 | 980.62 KB |
+
+
+| Method                    | GridSize | Mean         | Error         | StdDev       | Gen0    | Gen1   | Allocated |
+|-------------------------- |--------- |-------------:|--------------:|-------------:|--------:|-------:|----------:|
+| WithoutStackAllocOrStruct | 300      | 313,848.5 us | 211,836.28 us | 55,013.21 us |       - |      - |  42.42 KB |
+| WithStackAlloc            | 300      |  18,544.6 us |     313.11 us |     48.45 us | 93.7500 |      - | 961.69 KB |
+| WithStack2                | 300      |     585.3 us |      55.07 us |     14.30 us | 40.0391 | 7.8125 | 329.91 KB |
+
