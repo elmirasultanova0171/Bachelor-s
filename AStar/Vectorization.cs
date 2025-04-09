@@ -1,11 +1,8 @@
 using System;
 using System.Numerics;
 
-public class AStarVectorization
+public class Vectorization
 {
-    
-
-
 
  public static void AStarSIMD(ref GridS grid, ref NodeS start, ref NodeS end)
     {

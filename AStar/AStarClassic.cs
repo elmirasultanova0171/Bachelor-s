@@ -20,12 +20,10 @@ public class AStarClassic
         Node end = grid.NodeGrid[2, 2];
         end.Wall = false;
        
-      //  AStarMemoryOptimizations.AStarStackAlloc(gridS, startS, endS);
-          AStarMemoryOptimizations.AStarStruct(ref gridS, ref startS, ref endS);
+
+        //AStarMemoryOptimizations.AStarStruct(ref gridS, ref startS, ref endS);
         Console.WriteLine("done");
-        //AStarNoVisuals(grid, start, end);
-        //Console.WriteLine("done");
-        
+
     }  
     
 
@@ -186,76 +184,6 @@ public class AStarClassic
         return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
     }
    
-   //To visualize the path
-
-
-
-   
-
-
- // Some tests form here
-
-   public static void TestInitializeNodeGrid()
-{
-    int rows = 30;
-    int columns = 30;
-    Grid grid = new Grid(rows, columns);
-
-   for (int x = 0; x < rows; x++)
-    {
-        for (int y = 0; y < columns; y++)
-        {
-            grid.SetValue(x, y, x * columns + y + 1); 
-        }
-    }
-
-
-     Node[,] nodes = grid.NodeGrid;
-    if (nodes != null && nodes.GetLength(0) == rows && nodes.GetLength(1) == columns)
-    {
-        Console.WriteLine("NodeGrid initialized correctly.");
-        for (int x = 0; x < rows; x++)
-        {
-            for (int y = 0; y < columns; y++)
-            {
-                if (nodes[x, y] != null && nodes[x, y].X == x && nodes[x, y].Y == y)
-                {
-                    Console.WriteLine($"Node at ({x}, {y}) initialized correctly.");
-                }
-                else
-                {
-                    Console.WriteLine($"Node at ({x}, {y}) initialization failed.");
-                }
-            }
-        }
-    }
-    else
-    {
-        Console.WriteLine("NodeGrid initialization failed.");
-    }
-
-      Node node = grid.NodeGrid[20, 20];
-        node.AddNeighbors(grid);
-
-        Console.WriteLine($"Node at (1, 1) has {node.Neighbors.Count} neighbors.");
-        foreach (var neighbor in node.Neighbors)
-        {
-            Console.WriteLine($"Neighbor at ({neighbor.X}, {neighbor.Y}) ");
-        }
-
-        if (node.Neighbors.Count == 4 &&
-            node.Neighbors.Exists(n => n.X == 2 && n.Y == 1) &&
-            node.Neighbors.Exists(n => n.X == 0 && n.Y == 1) &&
-            node.Neighbors.Exists(n => n.X == 1 && n.Y == 2) &&
-            node.Neighbors.Exists(n => n.X == 1 && n.Y == 0))
-        {
-            Console.WriteLine("AddNeighbors test passed.");
-        }
-        else
-        {
-            Console.WriteLine("AddNeighbors test failed.");
-        }
-}
     
 }
 
